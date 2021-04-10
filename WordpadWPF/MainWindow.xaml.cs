@@ -124,6 +124,7 @@ namespace WordpadWPF
                                                                         (byte)color.Color.R, 
                                                                         (byte)color.Color.G,
                                                                         (byte)color.Color.B));
+
         }
     }
 }

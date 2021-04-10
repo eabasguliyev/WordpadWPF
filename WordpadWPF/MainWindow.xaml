@@ -173,8 +173,9 @@
                  BorderThickness="0"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
-                 TextChanged="TextBoxInput_TextChanged"
-                 VerticalScrollBarVisibility="Visible"/>
+                 VerticalScrollBarVisibility="Visible"
+                 SpellCheck.IsEnabled="True"
+                 TextChanged="TextBoxInput_TextChanged"/>
 
         
     </Grid>
