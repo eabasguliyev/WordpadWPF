@@ -9,12 +9,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WordpadWPF.Helpers;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace WordpadWPF
 {
@@ -39,7 +41,20 @@ namespace WordpadWPF
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            if (String.IsNullOrWhiteSpace(_fileHelper.FileName))
+            {
+                SaveFile();
+            }
+            else
+            {
+                _fileHelper.AutoSave(TextBoxInput.Text);
+            }
+        }
+
+        private void SaveFile()
+        {
             _fileHelper.SaveDataToFile(TextBoxInput.Text);
+            TextBlockFilePath.Text = _fileHelper.FileName;
         }
 
         private void TextBoxInput_TextChanged(object sender, TextChangedEventArgs e)
@@ -73,6 +88,42 @@ namespace WordpadWPF
         {
             TextBoxInput.Focus();
             TextBoxInput.SelectAll();
+        }
+
+        private void ButtonSaveAs_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void ButtonSelectFont_OnClick(object sender, RoutedEventArgs e)
+        {
+            var font = new FontDialog();
+
+            if (font.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                return;
+
+            TextBoxInput.FontFamily = new FontFamily(font.Font.Name);
+            TextBoxInput.FontSize = font.Font.Size;
+            TextBoxInput.FontWeight = font.Font.Bold ? FontWeights.Bold : FontWeights.Regular;
+            TextBoxInput.FontStyle = font.Font.Italic ? FontStyles.Italic:FontStyles.Normal;
+
+            TextDecorationCollection tdc = new TextDecorationCollection();
+            if (font.Font.Underline) tdc.Add(TextDecorations.Underline);
+            if (font.Font.Strikeout) tdc.Add(TextDecorations.Strikethrough);
+            TextBoxInput.TextDecorations = tdc;
+        }
+
+        private void ButtonSelectColor_OnClick(object sender, RoutedEventArgs e)
+        {
+            var color = new ColorDialog();
+
+            if (color.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+                return;
+
+            TextBoxInput.Foreground = new SolidColorBrush(Color.FromArgb((byte)color.Color.A,
+                                                                        (byte)color.Color.R, 
+                                                                        (byte)color.Color.G,
+                                                                        (byte)color.Color.B));
         }
     }
 }

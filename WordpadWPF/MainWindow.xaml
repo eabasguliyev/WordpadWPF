@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordpadWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Wordpad" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -17,50 +18,166 @@
                    Orientation="Horizontal">
             <TextBlock x:Name="TextBlockFilePath"
                        Margin="2"
-                       Text="File Path"
                        Height="30"
                        TextAlignment="Left"/>
             <Button x:Name="ButtonOpen"
                     Margin="5"
                     Width="50"
                     Content="Open"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Open existing file"
                     Click="ButtonOpen_Click"/>
             <Button x:Name="ButtonSave"
                     Margin="5"
                     Width="50"
                     Content="Save"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Save content to txt file"
                     Click="ButtonSave_Click"/>
+            <Button x:Name="ButtonSaveAs"
+                    Margin="5"
+                    Width="50"
+                    Content="Save As"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Save content to a new txt file"
+                    Click="ButtonSaveAs_OnClick"/>
             <ToggleButton x:Name="ToggleButtonAutoSave"
                           Margin="5"
                           Width="30"
-                          IsChecked="True"/>
+                          ToolTip="Save content to file automatically">
+                <ToggleButton.Resources>
+                    <Style TargetType="{x:Type ToggleButton}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Viewbox>
+                                        <Border x:Name="Border" CornerRadius="10"
+                            Background="#FFFFFFFF"
+                            Width="40" Height="20">
+                                            <Border.Effect>
+                                                <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.3" />
+                                            </Border.Effect>
+                                            <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
+                                 Margin="2 1 2 1"
+                                 Stroke="Gray" StrokeThickness="0.2"
+                                 HorizontalAlignment="Stretch">
+                                                <Ellipse.Effect>
+                                                    <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.3" Direction="260" />
+                                                </Ellipse.Effect>
+                                            </Ellipse>
+                                        </Border>
+                                    </Viewbox>
+                                    <ControlTemplate.Triggers>
+                                        <EventTrigger RoutedEvent="Checked">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="#FF4CD661"
+                                                    Duration="0:0:0.1" />
+                                                    <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="20 1 2 1"
+                                                        Duration="0:0:0.1" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="Unchecked">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="White"
+                                                    Duration="0:0:0.1" />
+                                                    <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="2 1 2 1"
+                                                        Duration="0:0:0.1" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Resources>
+            </ToggleButton>
             <Button x:Name="ButtonCut"
                     Width="50"
                     Margin="5"
                     Content="Cut"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Cut selected text"
                     Click="ButtonCut_Click"/>
             <Button x:Name="ButtonCopy"
                     Margin="5"
                     Width="50"
                     Content="Copy"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Copy selected text to clipboard"
                     Click="ButtonCopy_Click"/>
             <Button x:Name="ButtonPaste"
                     Width="50"
                     Margin="5"
                     Content="Paste"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Paste text from clipboard"
                     Click="ButtonPaste_Click"/>
             <Button x:Name="ButtonSelectAll"
                     Width="70"
                     Margin="5"
                     Content="Select All"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Select all content"
                     Click="ButtonSelectAll_Click"/>
+            <Button x:Name="ButtonSelectFont"
+                    Width="50"
+                    Margin="5"
+                    Content="Font"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Change content font/font size"
+                    Click="ButtonSelectFont_OnClick"/>
+            <Button x:Name="ButtonSelectColor"
+                    Width="50"
+                    Margin="5"
+                    Content="Color"
+                    VerticalContentAlignment="Center"
+                    BorderThickness="0"
+                    Background="#38a3e5"
+                    ToolTip="Change color of content"
+                    Click="ButtonSelectColor_OnClick"/>
         </WrapPanel>
 
-        <TextBox Grid.Row="1"
+
+        <Border Grid.Row="1" BorderThickness="0, 0.5, 0, 0"
+                BorderBrush="DarkGray"/>
+        <TextBox Grid.Row="2"
                  x:Name="TextBoxInput"
+                 BorderThickness="0"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
-                 Text="Input"
-                 TextChanged="TextBoxInput_TextChanged"/>
+                 TextChanged="TextBoxInput_TextChanged"
+                 VerticalScrollBarVisibility="Visible"/>
+
+        
     </Grid>
+    
+
 </Window>
